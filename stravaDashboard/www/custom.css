@@ -1,0 +1,8 @@
+/* custom.css */
+.skin-blue .main-header .logo {
+  width: 350px;  /* Adjust this value as needed */
+}
+
+.skin-blue .main-header .navbar {
+  margin-left: 350px;  /* This value should match the width of the .logo */
+}
