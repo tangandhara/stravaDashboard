@@ -4,9 +4,9 @@ library(rStrava)
 library(sf)
 library(httr)
 
-app_name <- "My API" # chosen by user
-app_client_id  <- 102029 # an integer, assigned by Strava
-app_secret <- "67db4a62becf14e519ee00852585cd8b8c7407b0" # an alphanumeric secret, assigned by Strava
+app_name <- "" # chosen by user
+app_client_id  <- "" # an integer, assigned by Strava
+app_secret <- "" # an alphanumeric secret, assigned by Strava
 
 stoken <- httr::config(token = strava_oauth(app_name, app_client_id, app_secret, cache = TRUE, app_scope="activity:read_all"))
 
