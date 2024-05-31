@@ -46,6 +46,7 @@ my_link <- a("Sam Csik", href = "https://samanthacsik.shinyapps.io/strava_dashbo
 my_link2 <- a("CJ Mayes", href = "https://x.com/_CJMayes")
 my_link3 <- a("Github", href = "https://github.com/samanthacsik/strava-dashboard")
 my_link4 <- a("{rStrava}", href = "https://github.com/fawda123/rStrava")
+my_link5 <- a("Github", href = "https://github.com/tangandhara/stravaDashboard/blob/main/stravaDashboard/stravaDashboard.R")
 
 # Header ------------------------------------------------------------------
 header <- dashboardHeader(title = strong("A decade of parkrun"))
@@ -98,7 +99,7 @@ body1 <- dashboardBody(
                   "I also wanted to develop my skills with Shiny in an effort to move beyond Tableau and Power BI for building dashboards. I've got a couple of ideas for other apps which I hope to build over the summer, so getting this one finished was a good warm up for those.",
                   br(),
                   br(),
-                  "A massive thank you to Sam for sharing her code on ", my_link3, ", especially for getting to grips with the ", my_link4, " package, which has allowed me to make a start with this - it's been much easier to piggyback off her work than start from scratch! The code for this site is on my Github and I hope it helps someone else too.",
+                  "A massive thank you to Sam for sharing her code on ", my_link3, ", especially for getting to grips with the ", my_link4, " package, which has allowed me to make a start with this - it's been much easier to piggyback off her work than start from scratch! The code for this site is on my ",my_link5," and I hope it helps someone else too.",
                   br(),
                   br()
                 )
