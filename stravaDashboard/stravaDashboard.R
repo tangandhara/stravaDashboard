@@ -323,7 +323,7 @@ server <- function(input, output, session) {
     if (is.null(selected_events) || "All" %in% selected_events) {
       selected_events <- unique(acts$event)
     }
-    acts %>%
+    acts |> 
       filter(
         event %in% selected_events,
         year(Date) >= input$year_sliderInput[1],
@@ -336,7 +336,7 @@ server <- function(input, output, session) {
   
   
   filtered_run_data <- reactive({
-    run_data %>%
+    run_data |> 
       filter(id %in% filtered_acts()$id)
   })
   
@@ -358,7 +358,7 @@ server <- function(input, output, session) {
         "Strava Achievments"  = achievement_count,
         "Strava Kudos" = kudos_count
       ) |>
-      select(parkrun, Year, Time, "Total Activity Distance (km)", "Average Heartrate (bpm)", "Total Elevation Gain (m)" , "Average Speed (km/h)", PB, "Strava Achievments" , "Strava Kudos") |>
+      select(parkrun, Year, Time, PB, "Total Activity Distance (km)", "Average Speed (km/h)","Average Heartrate (bpm)", "Total Elevation Gain (m)" ,  "Strava Achievments" , "Strava Kudos") |>
       arrange(Time)
   })
   
@@ -366,14 +366,14 @@ server <- function(input, output, session) {
   observeEvent(input$zoomButton, {
     filtered_data <- filtered_acts()
     if (nrow(filtered_data) > 0) {
-      bounds <- filtered_data %>%
+      bounds <- filtered_data  |> 
         summarize(
           minLat = min(lat, na.rm = TRUE),
           maxLat = max(lat, na.rm = TRUE),
           minLng = min(lng, na.rm = TRUE),
           maxLng = max(lng, na.rm = TRUE)
         )
-      leafletProxy("strava_map") %>%
+      leafletProxy("strava_map") |> 
         fitBounds(
           lng1 = bounds$minLng,
           lat1 = bounds$minLat,
@@ -418,7 +418,7 @@ server <- function(input, output, session) {
         locations = cells_body(columns = "PB"),
         fn = function(x) {
           if_else(x == "PB",
-                  paste0(x, " <i class='fa fa-smile'></i>"),
+                  paste0(x, " <i class='fa fa-smile' style='color: #4392F1;'></i>"),
                   x)
         }
       ) |> 
@@ -433,7 +433,7 @@ server <- function(input, output, session) {
       text_transform(
         locations = cells_body(columns = "Strava Achievments"),
         fn = function(x) {
-          if_else(x > 0,
+          if_else(as.numeric(x) > 10,
                   paste0(x, " <i class='fa fa-circle-check' style='color: green;'></i>"),
                   x)
         }
@@ -441,19 +441,11 @@ server <- function(input, output, session) {
       text_transform(
         locations = cells_body(columns = "Total Elevation Gain (m)"),
         fn = function(x) {
-          if_else(x > 1,
+          if_else(as.numeric(x) > 100,
                   paste0(x, " <i class='fa fa-arrow-trend-up' style='color: blue;'></i>"),
                   x)
         }
-      ) |>
-      text_transform(
-        locations = cells_body(columns = "Average Speed (km/h)"),
-        fn = function(x) {
-          if_else(x > 1,
-                  paste0(x, " <i class='fa fa-gauge' style='color: #8338EC;'></i>"),
-                  x)
-        }
-      ) |>  tab_source_note(
+      )  |>  tab_source_note(
         source_note = md("Some **Total Activity Distances** are greater than 5K because the parkrun was part of a longer run that was recorded as a single actitivity in Strava.")
       ) |>
       tab_header(
@@ -704,13 +696,13 @@ server <- function(input, output, session) {
   })
   
   output$myplot3 <- renderPlotly({
-    p3 <- parkrun_res %>%
-      mutate(Event = as.factor(`Event `)) %>%
-      arrange(Date) %>%
-      group_by(Date) %>%
-      summarise(event_count = n()) %>%
-      ungroup() %>%
-      mutate(Parkruns_completed = cumsum(event_count)) %>%
+    p3 <- parkrun_res |> 
+      mutate(Event = as.factor(`Event `)) |> 
+      arrange(Date) |> 
+      group_by(Date) |> 
+      summarise(event_count = n()) |> 
+      ungroup() |> 
+      mutate(Parkruns_completed = cumsum(event_count)) |> 
       ggplot(aes(x = as.Date(Date), y = Parkruns_completed)) +
       geom_hline(yintercept = 100)+
       annotate("text", x = as.Date("2017-06-15"), y = 104, label = "100th parkrun - Aug 2018", family = "Futura", size = 3)+
